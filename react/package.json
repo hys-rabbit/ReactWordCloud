@@ -1,0 +1,29 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hys-rabbit",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0 ",
+    "babel-preset-stage-1": "^6.22.0",
+    "babelify": "^7.3.0",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "es6-promise": "^4.0.5",
+    "react": "^15.4.2",
+    "react-d3-cloud": "^0.4.1",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0",
+    "whatwg-fetch": "^2.0.2"
+  }
+}
