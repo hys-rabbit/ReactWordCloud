@@ -86,8 +86,8 @@ class IndexController @Inject() extends Controller {
   
   /**
    * 形態素解析
-   * 入力された歌詞を名詞、動詞、形容詞に分解し、他の品詞は除く。
-   * 動詞は基本形に変換しています。
+   * 歌詞を解析し単語を基本形で抽出、
+   * 名詞、動詞、形容詞以外の品詞は除く。
    */
   def kuromoji(tokenizer: Tokenizer)(lyric: String):List[String] = {
     tokenizer.tokenize(lyric).toList
@@ -97,9 +97,9 @@ class IndexController @Inject() extends Controller {
   }
   
   /**
-   * マップ追加
-   * ミュータブルマップにテキストを追加する。
-   * すでに登録されているテキストの場合、カウントを増加する。
+   * マップ登録
+   * ミュータブルマップに単語を登録する。
+   * すでに登録されている単語の場合、カウントを１増やし更新する。
    */
   def entryMap(cloudMap: MutableMap[String, Int])(text: String) = {
     cloudMap(text) = cloudMap.getOrElse(text, 0) + 1
