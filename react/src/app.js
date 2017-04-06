@@ -30,7 +30,7 @@ export default class App extends React.Component {
   render() {
       return (
           <div>
-            <button type="button" onClick={this.fetchData.bind(this, '/', 'cloud')} >送信</button>
+            <button type="button" onClick={this.fetchData.bind(this, '/', 'cloud')} >解析</button>
 
             <WordCloud
               data={this.state.data}

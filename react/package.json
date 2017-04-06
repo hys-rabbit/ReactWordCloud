@@ -18,12 +18,9 @@
     "webpack": "^2.2.1"
   },
   "dependencies": {
-    "es6-promise": "^4.0.5",
     "react": "^15.4.2",
     "react-d3-cloud": "^0.4.1",
     "react-dom": "^15.4.2",
-    "react-redux": "^5.0.2",
-    "redux": "^3.6.0",
     "whatwg-fetch": "^2.0.2"
   }
 }

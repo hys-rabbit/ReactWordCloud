@@ -24,8 +24,6 @@ class IndexController @Inject() extends Controller {
     )
   }
   
-  val tokenizer = new Tokenizer
-  
   /**
    * GET処理
    */
@@ -51,20 +49,29 @@ class IndexController @Inject() extends Controller {
    * WordCloud処理
    */
   def cloud: JsValue = {
+    // 解析結果登録マップ
     val map = MutableMap[String, Int]()
-    val addText = addTextToMap(map)
-    val dir = Paths.get("resources/text/bumpofchicken")
-    Files.newDirectoryStream(dir, "*.txt").toList
-      .map(readLyric)
-      .map(kuromoji)
-      .foreach(w => w.foreach(addText))
+    // 解析
+    val analysis = kuromoji(new Tokenizer)_
+    // 登録
+    val entry = entryMap(map)_
+    /*
+     * 解析実行
+     * 歌詞ディレクトリからファイル名一覧を取得し、
+     * 歌詞読み込み -> 解析 -> マップ登録
+     * の順で実行する。
+     */
+    Files.newDirectoryStream(Paths.get("resources/text/bumpofchicken"), "*.txt").toList
+      .map(readLyric).map(analysis).foreach(w => w.foreach(entry))
     
-    val result = map.toSeq.filter(_._2 >= 3).sortBy(_._2).map(e => WordCloud(e._1, e._2.toString))
-    
-    println(map.size)
-    println(result.size)
-        
-    Json.toJson(result)
+    /*
+     * JSON変換し返却
+     * マップを昇順ソートし、先頭から500件までに絞り込む。
+     */
+    Json.toJson(
+        map.toSeq.sortBy(_._2).reverse.slice(0, 500)
+        .map(e => WordCloud(e._1, e._2.toString))
+      )
   }
   
   /**
@@ -82,7 +89,7 @@ class IndexController @Inject() extends Controller {
    * 入力された歌詞を名詞、動詞、形容詞に分解し、他の品詞は除く。
    * 動詞は基本形に変換しています。
    */
-  def kuromoji(lyric: String):List[String] = {
+  def kuromoji(tokenizer: Tokenizer)(lyric: String):List[String] = {
     tokenizer.tokenize(lyric).toList
       .filter(t => List("名詞", "動詞", "形容詞").contains(t.getPartOfSpeechLevel1))
       .map(t => if(t.getBaseForm == "*") t.getSurface else t.getBaseForm)
@@ -94,12 +101,8 @@ class IndexController @Inject() extends Controller {
    * ミュータブルマップにテキストを追加する。
    * すでに登録されているテキストの場合、カウントを増加する。
    */
-  def addTextToMap = (cloudMap: MutableMap[String, Int]) => (text: String) => {
-    if (cloudMap.contains(text)) {
-      cloudMap(text) = cloudMap.get(text).get + 1
-    } else { 
-      cloudMap(text) = 1
-    }
+  def entryMap(cloudMap: MutableMap[String, Int])(text: String) = {
+    cloudMap(text) = cloudMap.getOrElse(text, 0) + 1
   }
   
 }
