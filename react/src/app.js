@@ -3,7 +3,6 @@ import WordCloud from 'react-d3-cloud'
 import 'whatwg-fetch'
 
 const fontSizeMapper = word => Math.log2(word.value) * word.value * 0.3
-const rotate = word => 0
 
 export default class App extends React.Component {
 
@@ -35,7 +34,6 @@ export default class App extends React.Component {
             <WordCloud
               data={this.state.data}
               fontSizeMapper={fontSizeMapper}
-              rotate={rotate}
               width={1200}
               height={620}
             />
