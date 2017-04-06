@@ -25,14 +25,14 @@ class IndexController @Inject() extends Controller {
   }
   
   /**
-   * GET処理
+   * GET処理(HTML返却)
    */
   def get = Action {
     Ok(views.html.main())
   }
   
   /**
-   * POST処理
+   * POST処理(JSON返却)
    */
   def post = Action(parse.json) { request =>
     (request.body \ "event").asOpt[String].map { event =>
