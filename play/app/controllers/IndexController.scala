@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.{Map => MutableMap}
 import java.nio.file.{Path, Paths, Files}
 
-case class WordCloud(val text: String, value: String)
+case class WordCloud(text: String, value: String)
 
 @Singleton
 class IndexController @Inject() extends Controller {
