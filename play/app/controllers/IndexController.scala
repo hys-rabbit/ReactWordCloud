@@ -79,9 +79,7 @@ class IndexController @Inject() extends Controller {
    * 歌詞ファイルを読み込み、文字列として返却する。
    */
   def readLyric(path: Path):String = {
-    val sb = new StringBuilder
-    Files.readAllLines(path).toList.foreach(sb.append)
-    sb.toString
+    Files.readAllLines(path).toList.reduceLeft(_+_)
   }
   
   /**
